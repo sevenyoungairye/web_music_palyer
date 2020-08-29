@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../../../bootstrap/css/bootstrap.css" />
+		
+		<script type="text/javascript" src="../../../bootstrap/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../../bootstrap/js/bootstrap.js"></script>
+		<style>
+			.title{
+				display: inline-block;
+				width: 80px;
+			}
+			form{
+				text-align: center;
+			}
+			@media only screen and (max-width:768px ) {
+				form{
+					text-align:  left;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<h3>密码修改</h3>
+		<hr>
+		<form>
+			<div class="form-group form-inline">
+				<label for="t1" class="title" >原密码:</label>
+				<input id="t1" class="form-control">
+			</div>
+			<div class="form-group form-inline">
+				<label for="t2" class="title" >新密码:</label>
+				<input id="t2" class="form-control">
+			</div>
+			<div class="form-group form-inline">
+				<label for="t3" class="title" >重复密码:</label>
+				<input id="t3" class="form-control">
+			</div>
+			
+			<hr>
+			<button class="btn btn-primary">保存</button>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actions> <!-- actions 结点 -->
+
+	<action> 
+		<path>TestMvc1</path>
+		<type>com.lovely.action.TestMvc1</type>
+	</action>
+
+	<action>
+		<path>MusicUserAction</path>
+		<type>com.lovely.action.MusicUserAction</type>
+	</action>
+
+	<action>
+		<path>MusicListAction</path>
+		<type>com.lovely.action.MusicListAction</type>
+	</action>
+
+	<action>
+		<path>MusicSongAction</path>
+		<type>com.lovely.action.MusicSongAction</type>
+	</action>
+
+	<action>
+		<path>GetMusicSource</path>
+		<type>com.music.source.GetMusicSource</type>
+	</action>
+
+</actions>

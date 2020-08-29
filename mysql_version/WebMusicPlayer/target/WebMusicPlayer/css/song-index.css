@@ -1,0 +1,258 @@
+/*首页样式*/
+
+a:hover{text-decoration:none;}
+a:focus{text-decoration: none}
+/* a:active {color: #d9534f;}*/
+
+/*设置推荐音乐图片*/
+.top-img {
+    /*text-align: center;*/
+    width: 100%;
+    max-width: 260px;
+    max-height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*标题文字居中*/
+.top-title {
+    text-align: center;
+    border-bottom: 0px solid red;
+    height: 100%;
+    line-height: 227%;
+
+    font-size: 12px;
+}
+
+li {
+    width: 33.3%;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 0px;
+    border-bottom-color: transparent;
+
+}
+
+/* 标题悬浮变色 aliceblue*/
+.top-title:hover {
+    border-bottom: 1px solid red;
+    padding-top: 1px;
+    background-color: aliceblue;
+}
+
+.col-xs-4 {
+    text-align: center;
+}
+
+.song-singer {
+    color: gray;
+}
+
+.song-info {
+    color: gray;
+}
+
+.song-list-size {
+
+}
+
+/*歌单图片*/
+.song-list-img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 歌单信息简介 */
+.song-list-info {
+    width: 33.3333%;
+}
+
+.song-list-word-size {
+    font-size: 5px;
+    color: mediumaquamarine;
+}
+
+/*三个点点*/
+.glyphicon {
+    color: #b2dba1;
+    font-size: 30px;
+}
+
+.user-login {
+    top: 0.01%;
+    left: 50%;
+    position: absolute;
+}
+
+/*重写模态框弹出*/
+.modal.fade .modal-dialog {
+    transform: translate(-30%, 0);
+}
+
+.modal.in .modal-dialog {
+    transform: translate(0, 0%);
+}
+
+/*热歌榜样式*/
+
+/*歌曲序号*/
+.song-seq {
+    color:  #999;
+    padding: 5%;
+    margin-right: 2%;
+
+    float: left;
+}
+
+.song-name {
+    color: black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: normal;
+}
+
+.song-creator {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: normal;
+    color: #888;
+}
+
+/*播放按钮*/
+.right-play {
+    width: 80%;
+    height: 80%;
+    background-color: transparent;
+    color: transparent;
+
+   /* background: url(//s3.music.126.net/mobile-new/img/index_icon_2x.png?5207a28…=) no-repeat;
+    background-size: 166px 97px;*/
+}
+
+/*搜索*/
+.m-input .inputcover {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    padding: 0 30px;
+    box-sizing: border-box;
+    background: #ebecec;
+    border-radius: 30px;
+}
+
+.m-input .u-svg-srch {
+    position: absolute;
+    left: 0;
+    top: 9px;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+
+.u-svg-srch {
+    width: 13px;
+    height: 13px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNiAyNiI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBmaWxsPSIjYzljOWNhIiBkPSJNMjUuMTgxIDIzLjUzNWwtMS40MTQgMS40MTQtNy4zMTUtNy4zMTRBOS45NjYgOS45NjYgMCAwIDEgMTAgMjBDNC40NzcgMjAgMCAxNS41MjMgMCAxMFM0LjQ3NyAwIDEwIDBzMTAgNC40NzcgMTAgMTBjMCAyLjM0Mi0uODExIDQuNDktMi4xNiA2LjE5NWw3LjM0MSA3LjM0ek0xMCAyYTggOCAwIDEgMCAwIDE2IDggOCAwIDAgMCAwLTE2eiIvPjwvc3ZnPg==);
+}
+
+.u-svg {
+    display: inline-block;
+    vertical-align: middle;
+    background-position: 0 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/*按钮样式*/
+.m-input .search-input {
+    width: 100%;
+    height: 30px;
+    line-height: 18px;
+    background: rgba(0,0,0,0);
+    font-size: 14px;
+    color: #333;
+}
+
+.search-input {
+    border-radius: 0;
+    border: 0;
+
+    position: relative;
+    width: 100%;
+    height: 30px;
+
+    left: 0;
+    top: -7px;
+    margin: 0 8px;
+}
+
+.search-input:focus {
+    outline: 0;
+}
+
+.hot-title {
+    font-size: 12px;
+    line-height: 12px;
+    color: #666;
+}
+
+/*标签*/
+.tag-item {
+    display: inline-block;
+    height: 34px;
+    margin-right: 5px;
+    margin-left: 3%;
+    margin-bottom: 13px;
+    padding: 0 8px;
+    font-size: 14px;
+    line-height: 32px;
+    color: #333;
+}
+
+.tag-radius {
+    border: 0.1px solid lavender;
+    border-radius: 30px;
+}
+
+.item {
+    height: 200px;
+}
+
+/*.glyphicon-music {
+    width: 16px;
+    height: 16px;
+}*/
+.song-logo {
+    width: 16px;
+    height: 16px;
+}
+
+/* login form */
+.form-login {
+    background-color: #EDEDED;
+    padding: 20px;
+    border-radius: 15px;
+    border-color: #d2d2d2;
+    border-width: 5px;
+    box-shadow: 0 1px 0 #cfcfcf;
+}
+
+.search, glyphicon {
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+.song-link {
+    margin-left: 1%;
+    margin-bottom: 5%;
+    display: flex;
+
+    border-bottom: 1px solid rgba(0,0,0,.1);
+
+}
+

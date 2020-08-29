@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="src">
+    <CLASSES>
+      <root url="jar://D:/softWare/Tomcat/apache-tomcat-9.0.37/lib/jsp-api.jar!/" />
+      <root url="jar://D:/softWare/Tomcat/apache-tomcat-9.0.37/lib/servlet-api.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../LogisticsManagement/LogisticsManagement/src" />
+    </SOURCES>
+  </library>
+</component>

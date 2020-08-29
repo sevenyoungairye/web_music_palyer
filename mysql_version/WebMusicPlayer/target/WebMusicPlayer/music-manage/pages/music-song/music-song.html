@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌曲列表</title>
+
+    <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.css" />
+
+    <script type="text/javascript" src="../../../bootstrap/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../../bootstrap/js/bootstrap.js"></script>
+
+    <style>
+        thead th{
+            text-align: center;
+            background-color: #ECF0F5;
+        }
+    </style>
+
+    <script>
+
+        function load_song() {
+
+            $.ajax({
+                url: "MusicSongAction.do?method=queryAllMusicSong",
+                type: "post",
+                data: $("#search-song-form").serialize(),
+                success: function (data) {
+                    let song_str = "";
+                    let totalPage = data.totalPage;
+                    $("#totalPage").val(totalPage);
+                    let song_list = data.songList;
+
+                    for (let i = 0; i < song_list.length; i++) {
+                        song_str += "<tr>" +
+                                        "<td>" + song_list[i].songId + "</td>" +
+                                        "<td>" + song_list[i].title + "</td>" +
+                                        "<td>" + song_list[i].singer + "</td>" +
+                                        "<td>" + song_list[i].listeningVolume + "</td>" +
+                                        "<td>" + song_list[i].createDate + "</td>" +
+                                        "<td>" +
+                                        "    <a href='javascript:edit_song(" + song_list[i].songId + ");' id=''>编辑</a>" +
+                                        "</td>" +
+                                    "</tr>";
+                    }
+
+                    $("#tab-song tr").remove();
+                    $("#tab-song").append(song_str);
+
+                    let li_str = "";
+                    // pages
+                    for (let i = 1; i <= totalPage; i++) {
+                        li_str += "<li><a href='javascript:find_song_by_page(" + i + ");'>" + i + "</a></li>";
+                    }
+                    $("#group-page li:gt(0):not(:last)").remove();
+                    $("#group-page li:eq(0)").after(li_str);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+            // previous page
+            $("#previous_page").click(function () {
+                let pageNo = parseInt($("#pageNo").val());
+                if (pageNo > 1) {
+                    change_page(pageNo - 1);
+                    load_song();
+                }
+            });
+
+            // next page
+            $("#next-page").click(function () {
+                let pageNo = parseInt($("#pageNo").val());
+                let totalPage = parseInt($("#totalPage").val());
+                if (pageNo < totalPage) {
+                    change_page(pageNo + 1);
+                    load_song();
+                }
+            });
+        }
+
+        function change_page(pageNo) {
+            $("#pageNo").val(pageNo);
+        }
+
+        function find_song_by_page(pageNo) {
+            pageNo = parseInt(pageNo);
+            change_page(pageNo);
+            load_song();
+        }
+
+        //  to edit page
+        function edit_song(song_id) {
+            location.href = "music-song-edit.html?id=" + song_id;
+        }
+
+        $(function () {
+
+            load_song();
+
+            // search song
+            $("#search-song").on("click", function () {
+                load_song();
+            });
+
+        });
+    </script>
+
+</head>
+<body>
+
+<h4>歌曲管理</h4>
+
+<hr/>
+
+<form class="form-inline" id="search-song-form" autocomplete="off">
+    <div class="form-group">
+        <label for="t1">歌曲id</label>
+        <input class="form-control" id="t1" name="song.songId" />
+    </div>
+    <div class="form-group">
+        <label for="t2">歌曲名</label>
+        <input  class="form-control"  id="t2" name="song.title" />
+
+        <input type="hidden" id="pageNo" name="pageNo" value="1"/>
+    </div>
+
+    <div class="form-group">
+        <label for="t3">歌手</label>
+        <input class="form-control" id="t3" name="song.singer" />
+    </div>
+
+    <button type="button" class="btn btn-info" id="search-song"><label class="glyphicon glyphicon-search"></label>搜索</button>
+    <a href="music-song-add.html" class="btn btn-danger">新增歌曲</a>
+</form>
+</br>
+
+<table class="table table-bordered text-center">
+    <thead >
+        <th>歌曲编号</th>
+        <th>歌名</th>
+        <th>歌手</th>
+        <th>歌曲收听量</th>
+        <th>上传日期</th>
+        <th>操作</th>
+    </thead>
+    <tbody id="tab-song">
+    <tr>
+        <td>1</td>
+        <td>gorgeous</td>
+        <td>Taylor Swift</td>
+        <td>100</td>
+        <td>2020-3-3</td>
+        <td>
+            <a href="javascript:" id="" data-toggle="modal" data-target="">编辑</a>
+        </td>
+    </tr>
+
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination" id="group-page">
+                    <li>
+                        <a href="javascript:" aria-label="Previous" id="previous_page">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="javascript:" aria-label="Next" id="next-page">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+
+<input type="hidden" id="totalPage" name="totalPage" value=""/>
+
+</body>
+</html>

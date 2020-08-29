@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单详细信息</title>
+    <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.css" />
+
+    <script type="text/javascript" src="../../../bootstrap/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../../bootstrap/js/bootstrap.js"></script>
+
+    <script type="text/javascript" src="../js/play_list_details.js"></script>
+
+    <style>
+        thead th{
+            text-align: center;
+            background-color: #ECF0F5;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .left-div, .right-div {
+            float: left;
+        }
+
+        img {
+            width: 144px;
+            height: 144px;
+        }
+
+        .left-div {
+            width: 25%;
+        }
+
+        .right-div {
+            width: 75%;
+        }
+
+        .tag-instance {
+            margin-bottom: 1%;
+        }
+
+        .list-creator {
+            color: #0c73c2;
+        }
+
+        .create-date {
+            margin-left: 15px;
+            color: #999;
+        }
+
+        .song-details {
+            color: #666;
+            /*line-height: 14px;*/
+        }
+
+        .song-tag {
+            border-radius: 30px;
+            border: 1px solid #777;
+            padding: 2px;
+            color: #666;
+
+            margin-right: 5px;
+        }
+
+        .song-title {
+            font-weight: bold;
+        }
+
+        .add-song-div {
+            float: left;
+            margin-left: 9%;
+        }
+    </style>
+
+</head>
+<body>
+<h3>歌单管理</h3>
+<hr>
+
+<div class="container">
+    <div class="col-md-12" style="float: none">
+
+        <!--left img-->
+        <div class="left-div">
+            <div>
+                <img id="list-img" src="../../img/2.jpg"/>
+            </div>
+        </div>
+
+        <!--right song list info-->
+        <div class="right-div">
+            <div>
+                <div class="tag-instance song-title">
+                    <label id="list-title">纯音乐 解压 看书 刷题 睡觉 御用</label>
+
+                    <span style="float:right;margin-right:35px;">
+                    	<a id="list-update" href="song-list-edit.html?music_list_id=?">编辑</a>
+                    </span>
+                </div>
+            </div>
+            <div class="tag-instance">
+                <label class="list-creator" id="list-creator">admin</label>
+                <label class="create-date" id="list-date">2020-8-18 创建</label>
+            </div>
+            <div class="tag-instance">
+                标签
+                <span id="list-tag">
+                    <span class="song-tag">轻音乐</span>
+                    <span class="song-tag">学习</span>
+                    <span class="song-tag">夜晚</span>
+                </span>
+            </div>
+            <div class="tag-instance song-details" id="list-details">
+                介绍： 此歌单为纯音乐 解压 看书 刷题 睡觉 御用 愿这些音乐能带给在陌生城市的你一些温暖❤️
+
+                你要悄悄拔尖，然后惊艳所有人✨
+
+                乾坤未定，你我皆是黑马✨
+
+                歌单于2017年七月建 持续更新中...
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</br>
+
+<div>
+    <div style="text-align: center;">
+        <div class="add-song-div">
+            <a class="" href="#" data-toggle="modal" data-target="#add-song-to-list-modal">添加歌曲</a>
+        </div>
+        <label style="font-size: 20px;">歌曲列表</label>
+        <div style="float: right;">
+            <span style="margin-right: 50px;" id="list-playing-volume">播放 13次</span>
+        </div>
+    </div>
+</div>
+<!--分页对歌曲进行 增删改查...-->
+<table class="table table-bordered text-center">
+    <thead >
+    <tr>
+        <th>歌曲id</th>
+        <th>歌曲标题</th>
+        <th>歌手</th>
+        <th>上传日期</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody id="song-list-body">
+        <tr>
+            <td>1</td>
+            <td>spark fly.mp3</td>
+            <td>Taylor swift</td>
+            <td>2020-1-1</td>
+            <td>
+                <a href="#">移除</a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <!--分页！-->
+        <tr>
+            <td colspan="5">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="group-page">
+                        <li>
+                            <a href="javascript:" aria-label="Previous" id="previous_page">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="javascript:" aria-label="Next" id="next-page">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<input type="hidden" id="list_page_no" name="listPageNo" value="1"/>
+<input type="hidden" id="totalPage" />
+
+<!-- Modal find song -->
+<div class="modal fade" id="add-song-to-list-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请输入你要添加的歌曲</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off">
+                <fieldset>
+                    <legend>搜索</legend>
+                    <input oninput="search_song_to_add()" type="text" id="search-song" class="form-control" list="myList"/>  <!-- 利用id绑定datalist -->
+                    <datalist id="myList" onautocomplete="false">
+
+                    </datalist>
+                </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="add-song-to-list">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

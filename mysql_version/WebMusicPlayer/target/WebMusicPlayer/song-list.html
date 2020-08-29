@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>歌单列表</title>
+
+    <link rel="icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+    <script src="bootstrap/js/jquery-3.2.1.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" href="bootstrap/css/normalize.css" charset="UTF-8">
+
+    <script src="bootstrap/js/jquery-3.2.1.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="bootstrap/js/bootstrap.js" type="text/javascript" charset="UTF-8"></script>
+
+    <script src="bootstrap/js/html5shiv.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="bootstrap/js/respond.js" type="text/javascript" charset="UTF-8"></script>
+    <![endif]-->
+
+    <style>
+        .top-img {
+            background: /*url("img/ad_ic_4.png")*/ top no-repeat;
+            width: 100%;
+            height: 187px;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+
+            background-size: 100% 100%;
+
+            /* 背景图片虚化 */
+            filter: blur(5px);
+
+        }
+
+        #top-img {
+            max-height: 150px;
+        }
+
+        /*logo绝对定位*/
+        .music-logo {
+            position: absolute;
+            top: 5%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+
+        }
+
+        /*歌单标签圆角样式*/
+        .music-tag {
+            /*style="border: 1px solid lightskyblue;border-radius: 5px;"*/
+            border: 2px solid lightgrey;
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .one-darkgrey {
+            color: darkgrey;
+
+        }
+
+        /*收藏歌单*/
+        .music-star-btn {
+            color: whitesmoke;
+            border-radius: 10px;
+        }
+
+        .song-div {
+            background-color: ghostwhite;
+            border-bottom: 1px solid cornflowerblue;
+        }
+
+        .seq-song {
+            float: left;
+            margin: 2%;
+            text-align: center;
+            padding: 3%;
+        }
+
+        .song-name {
+            margin: 5%;
+            width: 200%;
+            max-width: 150px;
+        }
+
+        #list-title {
+            max-width: 130px;
+        }
+    </style>
+
+    <script>
+
+        function get_list_id() {
+            let param = location.search;
+            let str = param.substr(param.indexOf('?') + 1);
+
+            let id = 0;
+
+            if (str.indexOf("&") == -1) {
+                let arr = str.split("=");
+                id = arr[1];
+
+                if (id > 0)
+                    return id;
+
+                return 0;
+            } else {
+                return 0;
+            }
+        }
+
+        // 歌单信息列表
+        function queryPlayListInfo() {
+            // queryOneMusicList
+            $.ajax({
+                url: "MusicListAction.do?method=queryOneMusicList",
+                type: "get",
+                data: {"musicList.musicListId":get_list_id()},
+                success: function (data) {
+                    // console.log(data)
+                    // data play list info 歌单详细信息
+                    $("#top-img").prop('src', 'music-manage/img/' + data.musicListImg);
+
+                    $(".top-img:eq(0)").css('background-image', 'url(music-manage/img/'+data.musicListImg+')');
+                    $(".top-img").addClass('top-img');
+
+                    $("#list-title").html(data.musicListTitle);
+
+                    let listTag = data.musicListTag;
+                    let tag_arr = listTag.split(",");
+                    let tag_str = "";
+                    for (let i = 0; i < tag_arr.length; i++) {
+                        tag_str += "<span class=\"music-tag\">" + tag_arr[i] + "</span>&nbsp;";
+                    }
+                    $("#list-tag").html(tag_str);
+
+                    $("#list-details").html("简介：" + data.musicListDetails);
+
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+
+        function loadSongByListId() {
+            $.ajax({
+                url: "MusicListAction.do?method=getSongInPagePlayList",
+                type: "get",
+                data: {"musicList.musicListId":get_list_id()},
+                success: function (data) {
+                    // data song list in play_list! 在歌单中的歌曲
+                    let song_str = "";
+                    for (let i = 0; i < data.length; i++) {
+                        song_str +=
+                            "<div class=\"song-div\">" +
+                            "    <div class=\"clearfix\">" +
+                            "        <div class=\"one-darkgrey seq-song\">" + (i + 1) + "</div>" +
+                            "        <div style=\"float:left;\">" +
+                            "            <div class=\"clearfix\" style=\"\">" +
+                            "                <div class='song-name'>" + data[i].title + "</div>" +
+                            "                <div class=\"one-darkgrey\" > " + data[i].singer + " </div>" +
+                            "            </div>" +
+                            "        </div>" +
+                            "        <div style=\"float: right;\">" +
+                            "            <a href='song-play.html?list-id=" + get_list_id() + "&id=" + data[i].songId + "'>" +
+                            "               <img src=\"img/play.png\" class=\"img-circle\">" +
+                            "           </a>" +
+                            "        </div>" +
+                            "    </div>" +
+                            "</div>";
+                    }
+
+                    $("#song-list-div div").remove();
+                    $("#song-list-div").append(song_str);
+
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+
+        $(function () {
+
+            queryPlayListInfo();
+
+            loadSongByListId();
+
+        });
+    </script>
+
+</head>
+<body>
+
+    <div class="container">
+        <!-- 顶部图片 -->
+        <div>
+            <div class="col-xs-12 top-img"> </div>
+
+            <div class="music-logo">
+                <div style="float: left;margin-right: 25px">
+                    <img  id="top-img" src="img/ad_ic_1.png" style="width: 120px; height: 120px" alt="...">
+                </div>
+                <div style="float: left">
+                    <div style="margin-bottom: 25%;margin-top: 10%;">
+                        <label style="color: white" id="list-title">华语速爆新歌</label>
+                    </div>
+                    <div style="color: gray">
+                        <img src="img/spotify-logo.png" class="img-circle" style="width: 30px;height: 30px" alt="..."> me-spotify
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 歌单标签简介 -->
+        <div>
+            <div style="color: darkgrey; background-color: ghostwhite;">
+                <div style="margin-bottom: 5px;">
+                    标签：
+                    <span id="list-tag">
+                        <span class="music-tag">华语</span> <span class="music-tag">流行</span>
+                    </span>
+                </div>
+                <div id="list-details">
+                    简介：优质华语新歌，每周二官方精选推荐。
+                </div>
+            </div>
+        </div>
+
+        <!-- 歌曲列表标签 -->
+        <div style="margin-top: 5px;">
+            <div style="margin-topbackground-color: lightgray;color: darkgrey;padding-left: 2px;">歌曲列表</div>
+        </div>
+
+        <!--歌曲-->
+        <div id="song-list-div">
+
+            <div class="song-div">
+                <div class="clearfix">
+                    <div class="one-darkgrey seq-song">1</div>
+                    <div style="float:left;">
+                        <div class="clearfix" style="">
+                            <div style="margin: 5%;">一身所爱</div>
+                            <div class="one-darkgrey">莫文蔚-专辑</div>
+                        </div>
+                    </div>
+                    <div style="float: right;">
+                        <a href="#"><img src="img/play.png" class="img-circle"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="song-div">
+                <div class="clearfix">
+                    <div class="one-darkgrey seq-song">1</div>
+                    <div style="float:left;">
+                        <div class="clearfix" style="">
+                            <div style="margin: 5%;">一身所爱</div>
+                            <div class="one-darkgrey">莫文蔚-专辑</div>
+                        </div>
+                    </div>
+                    <div style="float: right;">
+                        <img src="img/play.png" class="">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 收藏歌单 fuck you.. -->
+        <!--<div style="text-align: center; margin-top: 5px;">
+            <button class="btn btn-default btn-lg btn-danger music-star-btn">收藏歌单</button>
+        </div>-->
+
+    </div>
+
+</body>
+</html>

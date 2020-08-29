@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>登陆界面</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0" />
+		
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../bootstrap/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+
+		<!-- 设置自适应 -->
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0" />
+		<style>
+			/*容器部分*/
+			
+			.container {
+				width: 500px;
+				height: 400px;
+				border: solid 1px #428BCA;
+				margin-top: 60px;
+				border-radius: 5px 5px 0 0;
+				padding: 0px;
+				background-color: white;
+			}
+			/*头部的实现*/
+			
+			.container header {
+				background-color: red;
+			}
+			
+			.container header h1 {
+				margin: 0px;
+				color: white;
+				padding: 20px;
+				text-align: center;
+			}
+			/*内容部分*/
+			
+			.container article {
+				padding: 50px;
+			}
+			/*页面部分*/
+			
+			html {
+				height: 100%;
+			}
+			
+			body {
+				height: 100%;
+				/*  for IE */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=white, endColorstr=lightblue);
+				/* for other Browser */
+				background-image: linear-gradient(bottom, lightblue 0%, white 100%);
+				background-image: -o-linear-gradient(bottom, lightblue 0%, white 100%);
+				background-image: -moz-linear-gradient(bottom, lightblue 0%, white 100%);
+				background-image: -webkit-linear-gradient(bottom, lightblue 0%, white 100%);
+				background-image: -ms-linear-gradient(bottom, lightblue 0%, white 100%);
+			}
+			
+			@media only screen and (max-width:768px) {
+				.container {
+					width: 100%;
+					height: 100%;
+					margin-top: 0;
+					border-radius: 0;
+				}
+				.container header h1 {
+					font-size: 25px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--整体容器 -->
+		<div class="container">
+			<!-- 头部 -->
+			<header>
+				<h1 style="font-size: 20px;">欢迎使用Cloud Music管理后台</h1>
+			</header>
+			<!-- 内容部分 -->
+			<article>
+				<!--表单部分-->
+				<form action="index.html">
+					<div class="form-group">
+						<label for="account">账号</label>
+						<input id="account" class="form-control" placeholder="账号" />
+					</div>
+					<div class="form-group">
+						<label for="password">密码</label>
+						<input id="password" class="form-control" type="text" placeholder="密码" />
+					</div>
+					<!-- 按键 -->
+					<div>
+						<input class="btn btn-primary" type="submit" value="提交">
+						<input class="btn btn-danger" type="reset" value="重置">
+					</div>
+				</form>
+			</article>
+		</div>
+
+	</body>
+
+</html>
