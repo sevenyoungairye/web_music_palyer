@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../../../bootstrap/css/bootstrap.css" />
+		
+		<script type="text/javascript" src="../../../bootstrap/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../../bootstrap/js/bootstrap.js"></script>
+		
+		<script type="text/javascript" src="../../../js/echarts.js"></script>
+
+	</head>
+	<body>
+		<h3>后台首页</h3>
+		<hr>
+		<div id="main" style="width: 450px;height:300px;margin: 0 auto;"></div>
+		
+		<script>
+			// 基于准备好的dom，初始化echarts实例
+	        var myChart = echarts.init(document.getElementById('main'));
+	
+	        // 指定图表的配置项和数据
+	        option = {
+			    title: {
+			        text: '访问统计'
+			    },
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        data:['浏览次数(pv)','独立访客(uv)','ip']
+			    },
+			    grid: {
+			        left: '3%',
+			        right: '4%',
+			        bottom: '3%',
+			        containLabel: true
+			    },
+			    toolbox: {
+			        feature: {
+			            saveAsImage: {}
+			        }
+			    },
+			    xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: ['10月1日','10月2日','10月3日','10月4日','10月5日','10月6日','10月7日']
+			    },
+			    yAxis: {
+			        type: 'value'
+			    },
+			    series: [
+			        {
+			            name:'浏览次数(pv)',
+			            type:'line',
+			            stack: '总量',
+			            data:[120, 132, 101, 134, 90, 230, 210]
+			        },
+			        {
+			            name:'独立访客(uv)',
+			            type:'line',
+			            stack: '总量',
+			            data:[220, 182, 191, 234, 290, 330, 310]
+			        },
+			        {
+			            name:'ip',
+			            type:'line',
+			            stack: '总量',
+			            data:[150, 232, 201, 154, 190, 330, 410]
+			        }
+			    ]
+			};
+
+			 // 使用刚指定的配置项和数据显示图表。
+        	myChart.setOption(option);
+		</script>
+	</body>
+</html>

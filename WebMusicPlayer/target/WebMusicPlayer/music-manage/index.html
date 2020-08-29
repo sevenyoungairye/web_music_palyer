@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../bootstrap/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+
+		<style>
+			/*重置页面默认属性的边框*/
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				height: 100%;
+			}
+			
+			.head{
+				height: 70px;
+				background-color: red;
+				color: white;
+			}
+			.content{
+				height: 100%;
+				background-color:  #ECF0F5;
+			}
+			.leftwrap{
+				height: 100%;
+				width: 150px;
+				background-color:  #ECF0F5;;
+				position: absolute;
+			}
+			/*右边内容部分*/
+			.rightwrap{
+				height: 100%;
+				background-color: white;
+				margin-left: 150px;
+			}
+			.dropdown > a{
+				color: white !important;
+				cursor: pointer;
+			}
+			
+			.panel{
+				margin-bottom: 0px;
+				border-radius: 0px;
+				
+				background-color: lightskyblue;
+				border-bottom: 1px solid white;
+			}
+			.panel > a{
+				display: inline-block;
+				padding: 10px;
+				color: white !important;
+			}
+			.submenu{
+				background-color: white;
+			}
+			
+			.navbar-collapse{
+				padding: 0px;
+			}
+			/*手机自适应部分*/
+			@media only screen and (max-width:768px ) {
+				
+				.leftwrap{
+					width: 100%;		
+					position: static;
+				}
+				.navbar-collapse.collapse{
+					height: auto !important;
+				}
+				
+				.rightwrap{
+					margin-left: 0px;
+				}
+				
+				.navbar-toggle{
+					position: absolute;
+					left: 10px;
+					top: 10px;
+					background-color: white;
+				}
+				.icon-bar{
+					background-color: darkgray;
+				}
+				.pull-left{
+					margin-left: 40px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 头部 -->
+		<div class="head">
+			<!--相应式按键 -->
+	            <button type="button" class="navbar-toggle" data-toggle="collapse"
+	                    data-target="#leftmenu">
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+			<div  style="padding-left: 20px; padding-right: 20px;">
+				<!--左边部分 -->
+				<div class="pull-left">
+					<h2>R-Cloud Music Manager</h2>
+				</div>
+				
+				<!--右边部分 -->
+				<div class="pull-right dropdown" style="padding-top: 20px;">
+			
+					<a data-toggle="dropdown" >admin (管理员)<span class="caret"></span></a>
+					<ul class="dropdown-menu" >
+				        <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 设置</a></li>
+				        <li><a href="#"><i class="glyphicon glyphicon-user"/></i> 个人中心</a></li>
+				        <li role="separator" class="divider"></li>
+				        <li><a href="#"><i class="glyphicon glyphicon-off"/></i> 退出</a></li>
+					</ul>
+				</div>
+				
+				<!-- 右边部分 -->
+
+			</div>
+		</div>
+		<!-- 内容部分 -->
+		<div class="content">
+			<!-- 左边内容 -->
+			<div class="leftwrap collapse navbar-collapse" id="leftmenu">
+				<ul id="accordion">
+					<!--用户管理-->
+					<li class="panel">
+						<a data-toggle="collapse" data-parent="#accordion"
+						   href="#collapseThree">
+							<span class="glyphicon glyphicon-user"></span>
+							用户管理
+							<span class="caret"></span>
+						</a>
+						<div id="collapseThree" class="panel-collapse collapse ">
+							<ul class="submenu nav nav-list">
+								<li ><a target="mainframe" href="pages/user/user-info.html">用户信息</a></li>
+							</ul>
+						</div>
+					</li>
+
+					<!--歌单管理-->
+					<li class="panel">
+						<a data-toggle="collapse" data-parent="#accordion"
+						   href="#collapseFour">
+							<span class="glyphicon glyphicon-music"></span>
+							歌单管理
+							<span class="caret"></span>
+						</a>
+						<div id="collapseFour" class="panel-collapse collapse ">
+							<ul class="submenu nav nav-list">
+								<li ><a target="mainframe" href="pages/song-list/song-list.html">所有歌单</a></li>
+							</ul>
+						</div>
+					</li>
+
+					<!--歌曲管理-->
+					<li class="panel">
+						<a data-toggle="collapse" data-parent="#accordion"
+						   href="#collapseFive">
+							<span class="glyphicon glyphicon-headphones"></span>
+							歌曲管理
+							<span class="caret"></span>
+						</a>
+						<div id="collapseFive" class="panel-collapse collapse ">
+							<ul class="submenu nav nav-list">
+								<li ><a target="mainframe" href="pages/music-song/music-song.html">所有歌曲</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 右边内容-->
+			<div class="rightwrap" style="position: relative;">
+				<iframe name="mainframe"
+					style="position: absolute;left: 0; top: 0; padding-left: 10px;"
+					width="100%"
+					height="100%"
+					scrolling="no"
+					frameborder="0" src="pages/console/home.html"></iframe>
+			</div>
+		</div>
+	</body>
+</html>

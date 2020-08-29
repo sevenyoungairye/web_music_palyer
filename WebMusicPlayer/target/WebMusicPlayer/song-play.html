@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>播放歌曲</title>
+
+	<link rel="icon" href="favicon.ico">
+
+    <!-- 如下为了视频不同浏览器   -->
+    <!--保证bootstrap的样式在不同的浏览器中保持一致-->
+    <link rel="stylesheet" href="bootstrap/css/normalize.css" charset="UTF-8">
+
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+    <script src="bootstrap/js/jquery-3.2.1.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="bootstrap/js/bootstrap.js" type="text/javascript" charset="UTF-8"></script>
+
+    <!--浏览器版本低于IE9,执行下方代码-->
+    <!--可以让不支持H5的浏览“支持”H5-->
+    <!--[if lt IE 9]>
+    <script src="bootstrap/js/html5shiv.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="bootstrap/js/respond.js" type="text/javascript" charset="UTF-8"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="css/song-play.css" />
+    <script src="js/play.js"></script>
+
+	<style>
+		.go_index {
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: transparent;
+			border-style: none;
+			outline: none;
+
+			color: #9acfea;
+			font-family: "微软雅黑 Light";
+		}
+	</style>
+
+</head>
+<body>
+
+	<div class="bgDiv">
+		<!--模糊背景-->
+	</div>
+	<div class="container">
+		<!--页面内容-->
+		<!--播放杆-->
+		<img src="img/needle-plus.png" class="imgNeedle"/>
+
+		<!--音乐图片-->
+		<img  class="imgMusic img-circle"/>
+		<!--黑圈图片-->
+		<img src="img/play_disc.png" class="imgBlack"/>
+
+		<!--返回歌单页面-->
+		<div class="">
+			<button class="btn go_index" onclick="go_index()">返回</button>
+		</div>
+
+		<div class="barDiv">
+			<div class="row">
+				<div class="col-xs-2" id="currTime" style="padding-left: 0%;">00:00</div>
+				<div class="col-xs-8">
+					<!--进度条-->
+					<div class="progress">
+					  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+						<span class="sr-only"></span>
+					  </div>
+					</div>
+				</div>
+				<div class="col-xs-2" id="totleTime">
+					00:00
+				</div>
+			</div>
+
+			<div class="row glyphiconDiv">
+				<div class="col-xs-4">
+					<!--上一首-->
+						<button class="btn btn-default" id="btn1">
+							<span class="glyphicon glyphicon-step-backward myglyphicon" aria-hidden="true"></span>
+						</button>
+				</div>
+				<div class="col-xs-4">
+					<!--播放 暂停-->
+					<button class="btn btn-default" id="btn2" disabled="disabled">
+						<span class="glyphicon glyphicon-play myglyphicon" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-xs-4">
+					<!--下一首-->
+					<button class="btn btn-default" id="btn3">
+						<span class="glyphicon glyphicon-step-forward myglyphicon" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--播放器-->
+	<audio id="au"></audio>
+
+	<!--小红点-->
+	<span class="mySpan img-circle"></span>
+
+	<!-- 歌词 -->
+	<div class="lrcBg">
+		<div class="lrc">
+			<!--动态加载-->
+		</div>
+	</div>
+
+	<!-- 歌手 歌曲-->
+	<div>
+		<span id="song-name">夜曲</span>
+		<span id="song-singer">周杰伦</span>
+	</div>
+
+
+</body>
+</html>

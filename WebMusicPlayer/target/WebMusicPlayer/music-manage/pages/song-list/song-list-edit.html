@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单编辑</title>
+
+    <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.css" />
+
+    <script type="text/javascript" src="../../../bootstrap/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../../bootstrap/js/bootstrap.js"></script>
+
+    <script type="text/javascript" src="../js/play_list_edit.js"></script>
+
+    <style>
+
+        .modal-dialog {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .modal-content {
+            /*overflow-y: scroll; */
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .modal-body {
+            overflow-y: scroll;
+            position: absolute;
+            top: 55px;
+            bottom: 65px;
+            width: 100%;
+        }
+
+        .modal-header .close {margin-right: 15px;}
+
+        .modal-footer {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .tag-kind {
+            margin-bottom: 5%;
+            clear: both;
+        }
+
+        .list-tag {
+            margin-bottom: 5%;
+            color: #666;
+        }
+
+        .left-kind {
+            float: left;
+            margin-right: 5%;
+        }
+
+        /*按钮边框*/
+        .btn:focus,
+        .btn:active:focus,
+        .btn.active:focus,
+        .btn.focus,
+        .btn:active.focus,
+        .btn.active.focus {
+            outline: none;
+        }
+
+        .edit-img {
+            float: left;
+            width: 150px;
+            height: 150px;
+        }
+
+        .form-control {
+            width: 480px;
+            display: inline;/*默认 不换行*/
+        }
+
+        .itm {
+            margin-bottom: 20px;
+            width: 600px;
+            height: 50px;
+        }
+
+        .l-tit {
+            width: 70px;
+            margin-right: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .lb-img-ed {
+            position: absolute;
+            top: 40%;
+            right: 30%;
+            display: block;
+        }
+
+        .song-tag {
+            border-radius: 30px;
+            border: 1px solid #777;
+            padding: 2px;
+            color: #666;
+
+            margin-right: 5px;
+        }
+
+    </style>
+
+</head>
+<body>
+<h3>歌单编辑</h3>
+<hr>
+
+</br>
+
+<!--修改歌单-->
+
+<div class="container">
+    <form id="play-list-form">
+        <div class="row">
+            <div style="float: left;">
+                <div class="itm">
+                    <label class="l-tit">歌单名</label>
+                    <input type="hidden" id="list-id" name="musicList.musicListId" />
+                    <input type="text" id="list-title" class="form-control" name="musicList.musicListTitle" />
+                </div>
+                <div class="itm">
+                    <label class="l-tit">标签</label>
+
+                    <input type="hidden" id="music-list-tag" name="musicList.musicListTag" value=""/>
+
+                    <span id="show-tag"></span>
+                    <a href="#" class="" data-toggle="modal" data-target="#myModal">选择歌单标签</a>
+                </div>
+                <div class="itm">
+                    <label class="l-tit">介绍</label>
+                    <textarea id="list-details" class="form-control" name="musicList.musicListDetails"></textarea>
+                </div>
+                <div class="itm">
+                    <label class="l-tit">播放量</label>
+                    <input type="number" id="list-playing-volume" class="form-control"
+                           name="musicList.musicListListeningVolume" />
+                </div>
+                <div class="itm" style="text-align: center">
+                    <input type="button" class="btn" value="保存" id="update-play-list"/>
+                    <input type="button" class="btn" onclick="history.back();" value="返回">
+                </div>
+
+            </div>
+
+            <div >
+                <a href="#" data-toggle="modal" data-target="#upd-img">
+                    <span class="lb-img-ed">编辑图片</span>
+                </a>
+                <img class="edit-img" id="list-img" src="../../img/3.jpg"/>
+
+                <input type="hidden" id="music-list-img" name="musicList.musicListImg" value="" /> <!--hidden img-->
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<!-- tag Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">选择合适的标签，最多可选3个</h4>
+            </div>
+            <div class="modal-body">
+                <!--tag-->
+                <div class="tag-kind">
+                    <div class="left-kind"><label>语种</label></div>
+                    <div style="float: left">
+                        <button class="btn list-tag">华语</button>
+                        <button class="btn list-tag">欧美</button>
+                        <button class="btn list-tag">日语</button>
+                        <button class="btn list-tag">韩语</button>
+                        <button class="btn list-tag">粤语</button>
+                    </div>
+                </div>
+
+                <div class="tag-kind">
+                    <div class="left-kind"><label>风格</label></div>
+                    <div style="float: left">
+                        <button class="btn list-tag">流行</button>
+                        <button class="btn list-tag">摇滚</button>
+                        <button class="btn list-tag">民谣</button>
+                        <button class="btn list-tag">电子</button>
+                        <button class="btn list-tag">舞曲</button> <br/>
+                        <button class="btn list-tag">说唱</button>
+                        <button class="btn list-tag">轻音乐</button>
+                        <button class="btn list-tag">爵士</button>
+                        <button class="btn list-tag">乡村</button>
+                        <button class="btn list-tag">R&B/Soul</button> <br/>
+                        <button class="btn list-tag">古典</button>
+                        <button class="btn list-tag">民族</button>
+                        <button class="btn list-tag">英伦</button>
+                        <button class="btn list-tag">金属</button>
+                        <button class="btn list-tag">朋克</button> <br/>
+                        <button class="btn list-tag">蓝调</button>
+                        <button class="btn list-tag">雷鬼</button>
+                        <button class="btn list-tag">世界音乐</button>
+                        <button class="btn list-tag">拉丁</button>
+                        <button class="btn list-tag">New Age</button><br/>
+                        <button class="btn list-tag">古风</button>
+                        <button class="btn list-tag">后摇</button>
+                        <button class="btn list-tag">Bossa Nova</button>
+                    </div>
+                </div>
+
+                <div class="tag-kind">
+                    <div class="left-kind"><label>场景</label></div>
+                    <div style="float: left">
+                        <button class="btn list-tag">清晨</button>
+                        <button class="btn list-tag">夜晚</button>
+                        <button class="btn list-tag">学习</button>
+                        <button class="btn list-tag">工作</button>
+                        <button class="btn list-tag">午休</button>  <br/>
+                        <button class="btn list-tag">下午茶</button>
+                        <button class="btn list-tag">地铁</button>
+                        <button class="btn list-tag">驾车</button>
+                        <button class="btn list-tag">运动</button>
+                        <button class="btn list-tag">旅行</button> <br/>
+                        <button class="btn list-tag">散步</button>
+                        <button class="btn list-tag">酒吧</button>
+                    </div>
+                </div>
+
+                <div class="tag-kind">
+                    <div class="left-kind"><label>情感</label></div>
+                    <div style="float: left">
+                        <button class="btn list-tag">怀旧</button>
+                        <button class="btn list-tag">清新</button>
+                        <button class="btn list-tag">浪漫</button>
+                        <button class="btn list-tag">伤感</button>
+                        <button class="btn list-tag">治愈</button> <br/>
+                        <button class="btn list-tag">放松</button>
+                        <button class="btn list-tag">孤独</button>
+                        <button class="btn list-tag">感动</button>
+                        <button class="btn list-tag">兴奋</button>
+                        <button class="btn list-tag">快乐</button> <br/>
+                        <button class="btn list-tag">安静</button>
+                        <button class="btn list-tag">思念</button>
+                    </div>
+                </div>
+
+                <div class="tag-kind">
+                    <div class="left-kind"><label>主题</label></div>
+                    <div style="float: left">
+                        <button class="btn list-tag">综艺</button>
+                        <button class="btn list-tag">影视原声</button>
+                        <button class="btn list-tag">ACG</button>
+                        <button class="btn list-tag">儿童</button>
+                        <button class="btn list-tag">校园</button> <br/>
+                        <button class="btn list-tag">游戏</button>
+                        <button class="btn list-tag">70后</button>
+                        <button class="btn list-tag">80后</button>
+                        <button class="btn list-tag">90后</button>
+                        <button class="btn list-tag">网络歌曲</button> <br/>
+                        <button class="btn list-tag">KTV</button>
+                        <button class="btn list-tag">经典</button>
+                        <button class="btn list-tag">翻唱</button>
+                        <button class="btn list-tag">吉他</button>
+                        <button class="btn list-tag">钢琴</button> <br/>
+                        <button class="btn list-tag">器乐</button>
+                        <button class="btn list-tag">榜单</button>
+                        <button class="btn list-tag">00后</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="get_tag">保存并关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- image modal -->
+<div class="modal fade" id="upd-img" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">上传图片</h4>
+            </div>
+            <div class="modal-body">
+                <form id="img-form" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="upload-input">上传封面</label>
+                        <input type="file" id="upload-input" name="myFile">
+                        <p class="help-block">支持jpg、png、bmp格式的图片，且文件小于2M</p>
+                    </div>
+                </form>
+
+                <div>
+                    <img id="show-img" src="">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary disabled" disabled="disabled" id="upload-img">上传</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

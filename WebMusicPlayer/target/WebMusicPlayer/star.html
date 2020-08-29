@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>start sky</title>
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+    <script src="bootstrap/js/jquery-3.2.1.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="bootstrap/js/bootstrap.js" type="text/javascript" charset="UTF-8"></script>
+
+    <script>
+        //画星空背景
+        function drawStars() {
+            var canvas = document.getElementById('canvas'),
+                ctx = canvas.getContext('2d'),
+                w = canvas.width = window.innerWidth,
+                h = canvas.height = window.innerHeight,
+
+                hue = 217, //色调色彩
+                stars = [], //保存所有星星
+                count = 0,  //用于计算星星
+                maxStars = 1300; //星星数量
+
+            //canvas2是用来创建星星的源图像，即母版，
+            //根据星星自身属性的大小来设置
+            var canvas2 = document.createElement('canvas'),
+                ctx2 = canvas2.getContext('2d');
+            canvas2.width = 100;
+            canvas2.height = 100;
+            //创建径向渐变，从坐标(half，half)半径为0的圆开始，
+            //到坐标为(half,half)半径为half的圆结束
+            var half = canvas2.width / 2,
+                gradient2 = ctx2.createRadialGradient(half, half, 0, half, half, half);
+            gradient2.addColorStop(0.025, '#CCC');
+            //hsl是另一种颜色的表示方式，
+            //h->hue,代表色调色彩，0为red，120为green，240为blue
+            //s->saturation，代表饱和度，0%-100%
+            //l->lightness，代表亮度，0%为black，100%位white
+            gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)');
+            gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)');
+            gradient2.addColorStop(1, 'transparent');
+
+            ctx2.fillStyle = gradient2;
+            ctx2.beginPath();
+            ctx2.arc(half, half, half, 0, Math.PI * 2);
+            ctx2.fill();
+
+            // End cache
+            function random(min, max) {
+                if(arguments.length < 2) {
+                    max = min;
+                    min = 0;
+                }
+
+                if(min > max) {
+                    var hold = max;
+                    max = min;
+                    min = hold;
+                }
+
+                //返回min和max之间的一个随机值
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function maxOrbit(x, y) {
+                var max = Math.max(x, y),
+                    diameter = Math.round(Math.sqrt(max * max + max * max));
+                //星星移动范围，值越大范围越小，
+                return diameter / 2;
+            }
+
+            var Star = function() {
+                //星星移动的半径
+                this.orbitRadius = random(maxOrbit(w, h));
+                //星星大小，半径越小，星星也越小，即外面的星星会比较大
+                this.radius = random(60, this.orbitRadius) / 8;
+                //所有星星都是以屏幕的中心为圆心
+                this.orbitX = w / 2;
+                this.orbitY = h / 2;
+                //星星在旋转圆圈位置的角度,每次增加speed值的角度
+                //利用正弦余弦算出真正的x、y位置
+                this.timePassed = random(0, maxStars);
+                //星星移动速度
+                this.speed = random(this.orbitRadius) / 50000;
+                //星星图像的透明度
+                this.alpha = random(2, 10) / 10;
+
+                count++;
+                stars[count] = this;
+            }
+
+            Star.prototype.draw = function() {
+                //星星围绕在以屏幕中心为圆心，半径为orbitRadius的圆旋转
+                var x = Math.sin(this.timePassed) * this.orbitRadius + this.orbitX,
+                    y = Math.cos(this.timePassed) * this.orbitRadius + this.orbitY,
+                    twinkle = random(10);
+
+                //星星每次移动会有1/10的几率变亮或者变暗
+                if(twinkle === 1 && this.alpha > 0) {
+                    //透明度降低，变暗
+                    this.alpha -= 0.05;
+                } else if(twinkle === 2 && this.alpha < 1) {
+                    //透明度升高，变亮
+                    this.alpha += 0.05;
+                }
+
+                ctx.globalAlpha = this.alpha;
+                //使用canvas2作为源图像来创建星星，
+                //位置在x - this.radius / 2, y - this.radius / 2
+                //大小为 this.radius
+                ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius);
+                //没旋转一次，角度就会增加
+                this.timePassed += this.speed;
+            }
+
+            //初始化所有星星
+            for(var i = 0; i < maxStars; i++) {
+                new Star();
+            }
+
+            function animation() {
+                //以新图像覆盖已有图像的方式进行绘制背景颜色
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.globalAlpha = 0.5; //尾巴
+                ctx.fillStyle = 'hsla(' + hue + ', 64%, 6%, 2)';
+                ctx.fillRect(0, 0, w, h)
+
+                //源图像和目标图像同时显示，重叠部分叠加颜色效果
+                ctx.globalCompositeOperation = 'lighter';
+                for(var i = 1, l = stars.length; i < l; i++) {
+                    stars[i].draw();
+                };
+
+                //调用该方法执行动画，并且在重绘的时候调用指定的函数来更新动画
+                //回调的次数通常是每秒60次
+                window.requestAnimationFrame(animation);
+            }
+
+            animation();
+        }
+
+        // damn it goddamn it ...
+    </script>
+
+    <style>
+        /*重写模态框弹出*/
+        .modal.fade .modal-dialog {
+            transform: translate(-30%, 0);
+        }
+
+        .modal.in .modal-dialog {
+            transform: translate(0, 0);
+        }
+
+        /* 设置html页面 和 身体高度为100% */
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bgDiv {
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            /*背景虚化*/
+            background-image: url("img/list8.jpg");
+            filter: blur(5px);
+        }
+
+        /*背景图*/
+        .imgMusic {
+            position: absolute;
+            width: 30%;
+            left: 35.5%;
+            top: 26.0%;
+            z-index: 20;
+
+            margin: auto;
+
+            animation: imgMusic1 5s both linear infinite;
+            animation-play-state: paused; /*开始停止转动*/
+        }
+
+        /*0-360旋转*/
+        @keyframes imgMusic1 {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 播放杆*/
+        .imgNeedle {
+            position: absolute;
+            width: 22%;
+            top: -1%;
+            left: 50%;
+
+            /*旋转圆心 最上方中心*/
+            transform-origin: 10% 0;
+            /*在歌词图片的上方*/
+            z-index: 30;
+
+            animation: imgNeedle1 3s both linear;
+            animation-play-state: paused;
+        }
+
+        @keyframes imgNeedle1 {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(15deg);
+            }
+        }
+
+        @keyframes imgNeedle2 {
+            from {
+                transform: rotate(15deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        /*黑圈*/
+        .imgBlack {
+            position: absolute;
+            width: 45%;
+            top: 20%;
+            left: 28%;
+        }
+    </style>
+
+    <script>
+        function alive() {
+            $(".imgMusic").css("animation-play-state", "running");
+            /*添加动画效果*/
+            $(".imgNeedle").css("animation-play-state", "running")
+            $(".imgNeedle").css("animation-name", "imgNeedle1");
+
+        }
+
+        function stop() {
+            $(".imgMusic").css("animation-play-state", "paused");
+
+            /*当歌曲暂停时， 添加动画 播放杆回到原来位置*/
+            $(".imgNeedle").css("animation-name", "imgNeedle2")
+            $(".imgNeedle").css("animation-play-state", "running")
+
+        }
+    </script>
+
+</head>
+<body>
+
+    <div class="bgDiv"></div>
+
+    <div class="container">
+        <div id="canvas" style="width: 100%;height: 100%;"></div>
+
+        <!-- 动画效果 模态框 -->
+        <!--<audio src="http://music.163.com/outchain/player?type=2&id=1374446646&auto=1&height=66" controls="controls"></audio>-->
+
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            Launch demo modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--旋转 播放杆 demo-->
+        <img src="img/needle-plus.png" class="imgNeedle"/>
+
+        <!--音乐图片-->
+        <img src="img/list8.jpg" class="imgMusic img-circle"/>
+        <!--黑圈图片-->
+        <img src="img/play_disc.png" class="imgBlack"/>
+
+        <div class="row">
+            <button class="btn" onclick="alive()">动起来</button>
+            <button class="btn" onclick="stop()">暂停</button>
+        </div>
+    </div>
+
+</body>
+</html>

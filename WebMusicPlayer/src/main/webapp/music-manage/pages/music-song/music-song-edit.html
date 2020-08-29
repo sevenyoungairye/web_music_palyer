@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑音乐</title>
+
+    <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.css" />
+
+    <script type="text/javascript" src="../../../bootstrap/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../../bootstrap/js/bootstrap.js"></script>
+
+    <style>
+        .form-control {
+            display: inline;
+            width: 70%;
+        }
+
+        .itm {
+            margin-bottom: 20px;
+            width: 750px;
+            height: 50px;
+        }
+
+        .l-tit {
+            width: 100px;
+            margin-right: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .upload-img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .lyrics {
+            width: 59%;
+            display: inline;
+        }
+    </style>
+
+    <script>
+
+        function get_song_id() {
+            let param = location.search;
+            let str = param.substr(param.indexOf('?') + 1);
+
+            let id = 0;
+
+            if (str.indexOf("&") == -1) {
+                let arr = str.split("=");
+                id = arr[1];
+
+                if (id > 0)
+                    return id;
+
+                return 0;
+            } else {
+                return 0;
+            }
+        }
+
+        $(function () {
+
+            $.ajax({
+                url: "MusicSongAction.do?method=queryOneSong",
+                type: "get",
+                data: {"song.songId": get_song_id()},
+                success: function (data) {
+                    let song = data.song;
+                    console.log(song);
+
+                    $("#songId").val(song.songId);
+                    $("#title").val(song.title);
+                    $("#singer").val(song.singer);
+                    $("#details").val(song.details);
+                    $("#upload-img").prop('src', '../../img/' + song.coverImg);
+
+                    $("#cover-img").val(song.coverImg);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+        });
+
+        $(function () {
+
+            // song cover image upload
+            $("#upload-cover-img-btn").click(function () {
+                // check
+                let cover_img = $("#select-cover-img-btn").val();
+                if (!cover_img) {
+                    alert("请选择上传的图片");
+                    return;
+                }
+
+                if (!cover_img.endsWith(".jpg") && !cover_img.endsWith(".png")) {
+                    alert("请选择jpg, png 格式");
+                    return;
+                }
+
+                let formData = new FormData($("#upload-cover-img-form")[0]);
+                $.ajax({
+                    url: "/WebMusicPlayer/imgUpload",
+                    data: formData,
+                    type: "post",
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (img_url) {
+
+                        $("#upload-img").css('display', 'inline');
+                        $("#upload-img").prop('src', '../../img/' + img_url);
+
+                        $("#cover-img").val(img_url);
+                        $("#cover-img-modal").modal('hide');
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+
+            });
+
+            // update play list
+            $("#edit-play-list").on("click", function () {
+                // validate form ..
+
+                // update one song
+                $.ajax({
+                    url: "MusicSongAction.do?method=updateMusicSong",
+                    type: "get",
+                    data: $("#edit-song-form").serialize(),
+                    async: true,
+                    success: function (data) {
+                        if (data > 0) {
+                            location.href = "music-song.html";
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+<h3>编辑歌曲</h3>
+
+<hr/>
+
+<div class="container">
+    <div class="col-lg-12">
+        <form id="edit-song-form" autocomplete="off">
+            <div class="row">
+
+                <div style="float: left">
+                    <div class="itm">
+                        <label class="l-tit">歌名</label>
+
+                        <input type="hidden" id="songId" name="song.songId" value="" />
+
+                        <input type="text" readonly="readonly" id="title" name="song.title"
+                               class="form-control" value="gorgeous"/>
+                    </div>
+
+                    <div class="itm">
+                        <label class="l-tit">歌手</label>
+                        <input type="text" id="singer" class="form-control" name="song.singer" value="Taylor Swift" />
+                    </div>
+
+                    <div class="itm">
+                        <label class="l-tit">歌曲介绍</label>
+                        <textarea class="form-control" id="details" name="song.details">111</textarea>
+                    </div>
+
+                    <!--<div class="itm">
+                        <label class="l-tit">歌词文件</label>
+                        <input type="hidden" id="lyrics-id"  name="song.lyricsId" />
+                        <input type="text" id="lyrics-path" name="lyrics.lyricsPath"  value="none.lrc"
+                               class="form-control lyrics" readonly />
+                        <a href="#" class="" data-toggle="modal" data-target="#lyrics-modal">选择歌词文件</a>
+                    </div>-->
+
+                    <div class="itm" style="text-align: center">
+                        <input type="button" class="btn" value="保存" id="edit-play-list"/>
+                        <input type="button" class="btn" onclick="history.back();" value="返回">
+                    </div>
+
+                </div>
+
+                <div style="float: right;margin-right: 1%"> <!--coverImg-->
+                    <div>
+                        <img class="upload-img"  id="upload-img" src="../../img/3.jpg"/>
+
+                        <input type="hidden" id="cover-img" name="song.coverImg">
+                    </div>
+                    <div>
+                        <a href="#" class="" data-toggle="modal" data-target="#cover-img-modal">选择歌曲封面图片</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--modal upload cover image-->
+<div class="modal fade" id="cover-img-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel2">选择歌曲封面图片</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" id="upload-cover-img-form" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="select-cover-img-btn">上传封面图片</label>
+                        <input type="file" id="select-cover-img-btn" name="song-cover-img" accept=".jpg,.png">
+                        <p class="help-block">支持png, jpg格式</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="upload-cover-img-btn">上传</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal upload lyrics file !-->
+<!--<div class="modal fade" id="lyrics-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel3">选择歌曲对应的歌词文件</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" id="upload-lyrics-form" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="select-lyric-btn">上传歌词文件</label>
+                        <input type="file" id="select-lyric-btn" name="song-lyrics">
+                        <p class="help-block">支持lrc格式</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="upload-lyrics-btn">上传</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+</body>
+</html>
